@@ -11,6 +11,11 @@ from model import run_experiment
 
 
 def fit_kde(data):
+    '''
+    A model which assumes each monthly change is IID.
+    So we fit a Kernel Density Estimator to the data
+    and sample as needed.
+    '''
     snp_percent_change = data["Percent change"].to_numpy()
     kde = gaussian_kde(snp_percent_change)
     return Model(name="Kernel Density Estimator",
