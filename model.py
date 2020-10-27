@@ -1,7 +1,11 @@
 from dataclasses import dataclass
-from typing import Dict
 from typing import Callable
+from typing import Dict
 from typing import List
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import pandas as pd
+import seaborn as sns
 
 ExperimentResults = Dict[str, List[int]]
 
@@ -126,3 +130,20 @@ def progressBar(iterable,
         yield item
         printProgressBar(i + 1)
     print()
+
+
+def plot(params: ExperimentParameters, results: ExperimentResults):
+    df = pd.DataFrame(data=results)
+
+    fig, axes = plt.subplots()
+    sns.violinplot(data=df, ax=axes, scale="width")
+    # axes = df.boxplot()
+    axes.set_title("Larger down payment vs Investing in S&P 500")
+    axes.set_xlabel(
+        f"Down payment ({params.on_hand_usd / 1000}k - x is invested)")
+    axes.set_ylabel(f"{params.years} year profit minus loan interest")
+    axes.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%d"))
+    axes.yaxis.grid(True)
+
+    plt.tight_layout()
+    plt.show()
