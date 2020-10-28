@@ -132,9 +132,9 @@ def progressBar(iterable,
     print()
 
 
-def plot(params: ExperimentParameters,
-         results: ExperimentResults,
-         model_name: str = ''):
+def violin_plot(params: ExperimentParameters,
+                results: ExperimentResults,
+                model_name: str = ''):
     df = pd.DataFrame(data=results)
 
     fig, axes = plt.subplots()
@@ -148,8 +148,7 @@ def plot(params: ExperimentParameters,
     axes.yaxis.grid(True)
 
     sns.violinplot(data=df, ax=axes, scale="width")
-    plt.tight_layout()
-    plt.show()
+    return fig
 
 
 def positive_returns_plot(params: ExperimentParameters,
@@ -170,10 +169,10 @@ def positive_returns_plot(params: ExperimentParameters,
                    f'({model_name})' if model_name else '')
     axes.set_xlabel(
         f"Down payment ({params.on_hand_usd / 1000}k - x is invested)")
-    axes.set_ylabel(f"Fraction of experiments with {params.years} year positive profit")
+    axes.set_ylabel(
+        f"Fraction of experiments with {params.years} year positive profit")
     axes.yaxis.grid(True)
 
     x_pos = [i for i, _ in enumerate(df.columns)]
     axes.bar(x_pos, ratios, tick_label=list(df.columns))
-    plt.tight_layout()
-    plt.show()
+    return fig

@@ -5,14 +5,15 @@ as a state in the markov chain, and then training
 the Markov model on sequential pairs of observations.
 '''
 
-from binary_search import binary_search
 from binary_search import BinarySearchHint
+from binary_search import binary_search
 from collections import defaultdict
 from dataclasses import dataclass
 from model import ExperimentParameters
 from model import Model
-from model import plot
+from model import violin_plot
 from model import run_experiment
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import random
@@ -132,4 +133,5 @@ if __name__ == "__main__":
         mortgage_rate=0.03,
     )
 
-    plot(params, run_experiment(model, params))
+    violin_plot(params, run_experiment(model, params))
+    plt.show()

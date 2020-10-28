@@ -1,9 +1,9 @@
 from model import ExperimentParameters
 from model import Model
-from model import plot
 from model import positive_returns_plot
 from model import run_experiment
 from scipy.stats import gaussian_kde
+import matplotlib.pyplot as plt
 import pandas as pd
 
 
@@ -31,3 +31,4 @@ if __name__ == "__main__":
     )
 
     positive_returns_plot(params, run_experiment(model, params), model.name)
+    plt.show()
