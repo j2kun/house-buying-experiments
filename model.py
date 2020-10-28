@@ -132,18 +132,48 @@ def progressBar(iterable,
     print()
 
 
-def plot(params: ExperimentParameters, results: ExperimentResults):
+def plot(params: ExperimentParameters,
+         results: ExperimentResults,
+         model_name: str = ''):
     df = pd.DataFrame(data=results)
 
     fig, axes = plt.subplots()
-    sns.violinplot(data=df, ax=axes, scale="width")
-    # axes = df.boxplot()
-    axes.set_title("Larger down payment vs Investing in S&P 500")
+    axes.set_title("Down payment vs Investing " +
+                   f'({model_name})' if model_name else '')
     axes.set_xlabel(
         f"Down payment ({params.on_hand_usd / 1000}k - x is invested)")
     axes.set_ylabel(f"{params.years} year profit minus loan interest")
+    axes.set_yscale("symlog", base=100)
     axes.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%d"))
     axes.yaxis.grid(True)
 
+    sns.violinplot(data=df, ax=axes, scale="width")
+    plt.tight_layout()
+    plt.show()
+
+
+def positive_returns_plot(params: ExperimentParameters,
+                          results: ExperimentResults,
+                          model_name: str = ''):
+    '''
+    A bar chart of the fraction of the distribution of outcomes
+    that has a positive return.
+    '''
+    df = pd.DataFrame(data=results)
+    ratios = []
+    for column in df.columns:
+        col = df[column]
+        ratios.append(len(col[col > 0]) / len(col))
+
+    fig, axes = plt.subplots()
+    axes.set_title("Down payment vs Investing " +
+                   f'({model_name})' if model_name else '')
+    axes.set_xlabel(
+        f"Down payment ({params.on_hand_usd / 1000}k - x is invested)")
+    axes.set_ylabel(f"Fraction of experiments with {params.years} year positive profit")
+    axes.yaxis.grid(True)
+
+    x_pos = [i for i, _ in enumerate(df.columns)]
+    axes.bar(x_pos, ratios, tick_label=list(df.columns))
     plt.tight_layout()
     plt.show()

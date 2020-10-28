@@ -1,8 +1,10 @@
 from model import ExperimentParameters
 from model import Model
 from model import plot
+from model import positive_returns_plot
 from model import run_experiment
 from scipy.stats import gaussian_kde
+import pandas as pd
 
 
 def fit_kde(data):
@@ -28,4 +30,4 @@ if __name__ == "__main__":
         mortgage_rate=0.03,
     )
 
-    plot(params, run_experiment(model, params))
+    positive_returns_plot(params, run_experiment(model, params), model.name)
