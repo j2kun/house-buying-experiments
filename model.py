@@ -16,11 +16,12 @@ class Model:
     '''
     A Sampler accepts as input a number of samples n,
     and returns returns a time-ordered list of n monthly percent changes of the S&P 500.
+    The percents are e.g., 5% instead of 0.05
 
     E.g.,
 
     >>> model.sampler(5)
-    [0.03, -0.02, 0.015, -0.07, 0.1]
+    [3, -2, 1.5, -7, 1]
     '''
     sampler: Callable[[int], List[float]]
 
@@ -143,7 +144,7 @@ def violin_plot(params: ExperimentParameters,
     axes.set_xlabel(
         f"Down payment ({params.on_hand_usd / 1000}k - x is invested)")
     axes.set_ylabel(f"{params.years} year profit minus loan interest")
-    axes.set_yscale("symlog", base=100)
+    # axes.set_yscale("symlog", base=100)
     axes.yaxis.set_major_formatter(ticker.FormatStrFormatter("$%d"))
     axes.yaxis.grid(True)
 
